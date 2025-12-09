@@ -41,10 +41,11 @@ int main(){
         else if(action == 'l'){
             char Search_phone[11];
             int count = 0;
+            printf("Enter the phone number you want to lookup:");
             scanf("%s",Search_phone);
             for(int j = 0;j < i;j++){
                 if(strcmp(Contact.phone[j],Search_phone) == 0){
-                    printf("%s\n",Contact.name[j]);
+                    printf("The name of the phone number %s is:%s\n",Search_phone,Contact.name[j]);
                     break;
                 }
                 count++;
