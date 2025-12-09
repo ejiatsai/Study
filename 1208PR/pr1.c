@@ -87,7 +87,7 @@ int main(){
             }
         }
         else {
-            printf("This is wrong action\n");
+            printf("This is not a legal action\n");
             puts("--");
         }
     }
