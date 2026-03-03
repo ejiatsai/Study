@@ -21,7 +21,6 @@ int main(){
                 v[i] /= 2;
                 std::cout << v[i] << " ";
             }
-            
         }
         std::cout << std::endl;
     }
