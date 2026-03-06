@@ -58,10 +58,11 @@ int CollatzExp::getStep(int s){
     if(!finish_flag)
         std::cout <<"未完成"<< std::endl;
     if(s > step_counter){
-        std::cout << "不存在的步驟" << std::endl;
-    }  
+        std::cout << "The step is not exixt" << std::endl;
+    }
+    else if(s == -1); // if s = -1 then do nothing
     else{
-        std::cout << v[s] << std::endl;
+        std::cout << "Step " << s << " is:" << v[s] << std::endl;
     } 
         
 }
@@ -78,16 +79,23 @@ void CollatzExp::reset(int n){
 int main(){
     // 完成 W2-3 最後的作業
     int num = 0,step = 0;
-    std::cin >> num;
-    CollatzExp col = CollatzExp(num);
+    std::vector <int> vnum;
+    while(std::cin >> num && num != -1){
+        vnum.push_back(num);
+    }
+    int *arr = vnum.data();
+    CollatzExp col = CollatzExp(*arr);
     col.run();
     col.showSeq();
     std::cin >> step;
     col.getStep(step);
-    std::cin >> num;
-    col.reset(num);
-    col.showSeq();
-    std::cin >> step;
-    col.getStep(step);
+    arr++;
+    for(int i = 1;i < vnum.size();i++){
+        col.reset(*arr);
+        col.showSeq();
+        std::cin >> step;
+        col.getStep(step);
+        arr++;
+    }
     return 0;
 }
