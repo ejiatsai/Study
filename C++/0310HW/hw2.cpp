@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 class Book{
     private:
@@ -117,22 +118,75 @@ class BookReader{
                 return readContent;
             }
         }
-        Book tearBook(Book &b){
-            b.setcontent("");
+        Book tearBook(Book &b,int tearPage){
+            int pagesNum = b.getpagesNum();
+            if(tearPage > pagesNum){
+                std::cout << "the page is not exist" << std::endl;
+            }
+            else{
+                std::string wholeBook = b.getcontent();
+                int word_a_page = b.getword_a_page();
+                int start = word_a_page *(tearPage - 1);
+                std::string tearcontent = wholeBook.replace(start,word_a_page,"");
+                b.setcontent(tearcontent);
+                return b;
+            }
         }
 };
 
 int main(){
-    Book b = Book(1235,18,"A Book");
-    b.showBook();
     BookWriter wa = BookWriter("123");
     BookReader rb = BookReader ("456");
-    Book book123 = wa.createBook(1232,"A Note","hahaha");
-    wa.writeBook(book123,"1324645675");
-    book123.showBook();
-    std::cout << rb.readBook(book123,3) << std::endl;
-    rb.tearBook(book123);
-    std::cout << book123.getpagesNum()<< std::endl;
-    book123.showBook();
+    std::vector <Book *> book123;
+    int isbn = 0;
+    std::string bookname = "",content = "";
+    std::cout << "Enter -1 to stop create book" << std::endl;
+    while(std::cin >> isbn && isbn != -1 && std::cin >> bookname >> content){
+        book123.push_back(new Book(wa.createBook(isbn,bookname,content)));
+    }
+    int booknumber = 0;
+    std::string writecontent = "";
+    std::cout << "Enter -1 to stop write book" << std::endl;
+    while(std::cin >> booknumber && booknumber != -1){
+        if(booknumber >= book123.size()){
+            std::cout << "The book is not exist" << std::endl;
+            continue;
+        }
+        std::cin >> writecontent;
+        wa.writeBook(*book123[booknumber],writecontent);
+        std::cout << "Book number " << booknumber << " has been successfully written" << std::endl;
+    }
+    for(int i = 0;i < book123.size() ; i++){
+        book123[i] -> showBook();
+    }
+    int readbooknumber = 0;
+    int readpage = 0;
+    std::cout << "Enter -1 to stop read book" << std::endl;
+    while(std::cin >> readbooknumber && readbooknumber != -1){
+        if(readbooknumber >= book123.size()){
+            std::cout << "The book is not exist" << std::endl;
+            continue;
+        }
+        std::cin >> readpage;
+        std::cout << rb.readBook(*book123[readbooknumber],readpage) << std::endl;
+    }
+    int tearbooknumber = 0,tearpage = 0;
+    std::cout << "Enter -1 to stop tear book" << std::endl;
+    while(std::cin >> tearbooknumber && tearbooknumber != -1){
+        if(tearbooknumber >= book123.size()){
+            std::cout << "The book is not exist" << std::endl;
+            continue;
+        }
+        std::cin >> tearpage;
+        rb.tearBook(*book123[tearbooknumber],tearpage);
+        std::cout << "The total pages of Book number " << tearbooknumber << " is " << book123[tearbooknumber] -> getpagesNum() << std::endl;
+    }
+    for(int i = 0;i < book123.size() ; i++){
+        book123[i] -> showBook();
+    }
+    for (Book* b : book123) {
+        delete b;
+    }
+    book123.clear();
     return 0;
 }
