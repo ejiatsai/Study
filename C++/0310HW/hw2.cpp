@@ -10,6 +10,15 @@ class Book{
         std::string bookName;
         std::string author;
         std::string content;
+        void setcontent(std::string c){
+            content = c;
+            pageCounter();
+        }
+        void addcontent(std::string c){
+            content += c;
+            pageCounter();
+        }
+        friend class BookWriter;
     public:
         Book(int i,int pps,std::string name){
             isbn = i;
@@ -61,12 +70,8 @@ class Book{
                 return content;
             }
         }
-        void setcontent(std::string c){
-            content = c;
-            pageCounter();
-        }
-        void addcontent(std::string c){
-            content += c;
+        void tearbook(int start){
+            content.erase(start,word_a_page);
             pageCounter();
         }
         void showBook(){
@@ -127,8 +132,7 @@ class BookReader{
                 std::string wholeBook = b.getcontent();
                 int word_a_page = b.getword_a_page();
                 int start = word_a_page *(tearPage - 1);
-                std::string tearcontent = wholeBook.replace(start,word_a_page,"");
-                b.setcontent(tearcontent);
+                b.tearbook(start);
                 return b;
             }
         }
@@ -140,8 +144,11 @@ int main(){
     std::vector <Book *> book123;
     int isbn = 0;
     std::string bookname = "",content = "";
-    std::cout << "Enter -1 to stop create book" << std::endl;
-    while(std::cin >> isbn && isbn != -1 && std::cin >> bookname >> content){
+    std::cout << "Enter -1 to stop create book,and use comma to divide every variable" << std::endl;
+    while(std::cin >> isbn && isbn != -1 ){
+        std::cin.ignore();
+        std::getline(std::cin,bookname,',');
+        std::getline(std::cin,content);
         book123.push_back(new Book(wa.createBook(isbn,bookname,content)));
     }
     int booknumber = 0;
