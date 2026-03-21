@@ -123,7 +123,7 @@ public:
     }
 
     void attack(People* p) override {
-        if(abs(location - p->getLocation()) <= 10){
+        if(abs(location - p->getLocation()) <= 15){
             p->hurt(attackPoint);
         }
         else {
@@ -175,14 +175,20 @@ void battle(People* p1, People* p2) {
 }
 
 int main() {
-    // 建立戰士 (血量100, 起始位置0, 速度5,方向向右(1), 攻擊力20)
     Warrior warrior1(100, 0, 5,1, 20);
-    Warrior warrior2(100, 15, 5,1, 20);
-    // 建立弓手 (血量80, 起始位置5, 速度4,方向向右(1), 攻擊力15)
-    Archer archer(80, 10, 4,1, 15);
-
-    cout << "對戰開始：戰士 vs 戰士\n";
-    battle(&warrior1, &warrior2);
+    Warrior warrior2(100, 13, 5,1, 20);
+    Archer archer(80, 16, 4,1, 15);
+    cout << "請選擇:1.戰士 vs 戰士\n" << "       2.戰士 vs 弓手\n";
+    int choose = 0;
+    cin >> choose;
+    if(choose == 1){
+        cout << "對戰開始：戰士 vs 戰士\n";
+        battle(&warrior1, &warrior2);
+    }
+    else {
+        cout << "對戰開始：戰士 vs 弓手\n";
+        battle(&warrior1, &archer);
+    }
 
     return 0;
 }
