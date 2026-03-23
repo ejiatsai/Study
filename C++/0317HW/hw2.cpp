@@ -175,8 +175,8 @@ void battle(People* p1, People* p2) {
 }
 
 int main() {
-    Warrior warrior1(100, 0, 5,1, 20);
-    Warrior warrior2(100, 13, 5,1, 20);
+    Warrior warrior1(100, 0, 6,1, 20);
+    Warrior warrior2(100, 13, 6,1, 20);
     Archer archer(80, 16, 4,1, 15);
     cout << "請選擇:1.戰士 vs 戰士\n" << "       2.戰士 vs 弓手\n";
     int choose = 0;
