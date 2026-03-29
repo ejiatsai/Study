@@ -77,6 +77,9 @@ public:
 
     People operator--(){
         this->healthPoint -= 3;
+        if(this->healthPoint < 0){
+            this->healthPoint = 0;
+        }
         return *this;
     }
 };
