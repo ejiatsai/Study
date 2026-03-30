@@ -146,12 +146,17 @@ public:
     void move(People *p) override {
         int p2_location = p->getLocation();
         if(location - p2_location > 0){
-            direction = -1;
+                direction = -1;
+            }
+            else{
+                direction = 1;
         }
-        else {
-            direction = 1;
+        if(abs(location - p2_location) >= 15){
+            location += 1 * speed * direction;
         }
-        location += -1 * speed * direction;
+        else{
+            location += -1 * speed * direction;
+        }
     }
 
     void attack(People* p) override {
