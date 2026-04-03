@@ -17,8 +17,10 @@ protected:
     int speed;
     int direction;
     int attackPoint;
+    int ID;
 
 public:
+    static int counter;
     People(int hp, int loc, int sp, int drt, int atk) {
         healthPoint = hp;
         location = loc;
@@ -26,17 +28,35 @@ public:
         attackPoint = atk;
         if (drt > 0) direction = 1;
         else direction = -1;
+        ID = counter;
+        counter++;
     }
 
     virtual ~People() = default;
 
-    int getLocation() const { return location; }
+    static int getCounter(){
+        return counter;
+    }
+
+    int getID(){
+        return ID;
+    }
+
+    void teamLeader(int num){
+        attackPoint += num;
+    }
+
+    int getLocation() const { 
+        return location; 
+    }
 
     void setLocation() {
         location = (rand() % 41) - 20;
     }
 
-    bool isAlive() const { return healthPoint > 0; }
+    bool isAlive() const { 
+        return healthPoint > 0; 
+    }
 
     virtual void move(People *p) {
         location += speed * direction;
@@ -53,7 +73,9 @@ public:
         p->hurt(attackPoint);
     }
 
-    int getHealth() const { return healthPoint; }
+    int getHealth() const { 
+        return healthPoint; 
+    }
 
     void roundend(int endhp) {
         healthPoint -= endhp;
@@ -75,7 +97,7 @@ public:
         return *this;
     }
 
-    People operator--(){
+    People& operator--(){
         this->healthPoint -= 3;
         if(this->healthPoint < 0){
             this->healthPoint = 0;
@@ -283,6 +305,8 @@ int battle(People* p1, People* p2) {
     }
 }
 
+int People::counter = 1;
+
 int main() {
     srand(time(NULL));
     std::vector <People *> teamA;
@@ -292,10 +316,15 @@ int main() {
     for(int i = 0;i < 6;i++){
         std::cin >> c;
         if(c == "w"){
-            teamA.push_back(new Warrior(100, 0, 6,1, 20)); // sp,loc0,sp,drt,atk
+            teamA.push_back(new Warrior(100, 0, 6,1, 20)); // sp,loc,sp,drt,atk
         }
         else {
             teamA.push_back(new Archer(80, 0, 4,1, 15)); // sp,loc,sp,drt,atk
+        }
+        if(i == 5){
+            std::cout << "You are Leader,attack UP\n";
+            teamA[5]->teamLeader(teamA[5]->getID());
+            printObject(teamA[5]);
         }
     }
     std::cout << "===== Enter w to add a warrior;enter a to add a archer =====\n" << "Team B:\n";
@@ -306,6 +335,11 @@ int main() {
         }
         else {
             teamB.push_back(new Archer(80, (rand() % 41) - 20, 4,1, 15));
+        }
+        if(i == 5){
+            std::cout << "You are Leader,attack UP\n";
+            teamB[5]->teamLeader(abs(teamB[5]->getID() - teamA[5]->getID()));
+            printObject(teamB[5]);
         }
     }
     auto teamAptr = teamA.begin();
