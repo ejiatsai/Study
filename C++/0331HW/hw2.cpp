@@ -24,7 +24,10 @@ int main(){
     parse_func(function,&token);
     std::cout << "Tokens:[";
     for(auto it:token){
-        std::cout << "\"" << it << "\",";
+        std::cout << "\"" << it << "\"";
+        if(it != token.back()){
+            std::cout << ",";
+        }
     }
     std::cout << "]";
     return 0;
